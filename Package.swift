@@ -15,7 +15,7 @@ let package = Package(
             targets: ["NavigationManager"]),
     ],
     dependencies: [
-       .package(url: "https://github.com/your_username/NavigationManager.git", from: "1.0.0")
+       .package(url: "https://github.com/Kim-Min-Hyeok/NavigationManager.git", from: "1.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
