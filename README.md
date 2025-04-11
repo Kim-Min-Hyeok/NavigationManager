@@ -1,7 +1,7 @@
 # NavigationManager
 
 NavigationManager는 SwiftUI의 `NavigationStack`과 Combine을 활용해 선언적으로 라우팅을 관리할 수 있도록 도와주는 라이브러리입니다. 이 패키지는 iOS 16.0 이상을 타겟으로 하며, 간결하고 확장 가능한 방식으로 앱의 라우팅 상태를 관리할 수 있도록 설계되었습니다.
-
+(Target 설정에서 Minimum Deployments를 iOS 16.0 이상으로 설정하십시오.)
 ## 설명
 
 - **Path 관리:**  
