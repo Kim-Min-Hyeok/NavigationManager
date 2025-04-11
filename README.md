@@ -21,7 +21,7 @@ NavigationManager는 SwiftUI의 `NavigationStack`과 Combine을 활용해 선언
 NavigationManager는 Swift Package Manager(SPM)를 통해 쉽게 설치할 수 있습니다.
 
 1. **Xcode에서 프로젝트 열기:**  
-   Xcode 메뉴 **File > Swift Packages > Add Package Dependency…**를 선택합니다.
+   Xcode 메뉴 **File > Add Package Dependency…**를 선택합니다.
 
 2. **패키지 URL 입력:**  
    아래와 같이 GitHub 리포지토리 URL을 입력합니다.
