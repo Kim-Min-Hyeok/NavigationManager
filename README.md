@@ -46,6 +46,28 @@ NavigationManager를 사용하면 별도의 NavigationStack을 구성할 필요 
 
 다음은 기본적인 사용 예제입니다.
 
+1. 해당 경로로 이동 (push)
+```swift
+// toNamed(route: String, arguments: AnyHashable? = nil)
+router.toNamed("/detail")
+```
+2. 뒤로가기 (pop)
+```swift
+router.back()
+```
+3. 현재 화면을 제거하고 해당 경로로 이동 (replace)
+```swift
+// 현재 path가 /detail/2 였다면, /detail/3 로 이동
+// offNamed(_ route: String, arguments: AnyHashable? = nil)
+router.offNamed("/3")
+```
+4. 전체 스택을 비우고 해당 경로를 새 루트로 설정
+```swift
+// 현재 path가 /detail/3 이었다면, /로 이동
+// offAll(_ route: String, arguments: AnyHashable? = nil)
+router.offAll("/")
+```
+5. 전체 예제
 ```swift
 import SwiftUI
 import NavigationManager
