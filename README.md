@@ -32,7 +32,7 @@ NavigationManager는 Swift Package Manager(SPM)를 통해 쉽게 설치할 수 �
    최신 버전을 선택하고 **Add Package**를 클릭합니다.
 
 5. **Target 선택:**  
-   Add to Target 탭의 원하는 Target을 선택하고 **Add Package**를 클릭합니다.
+   **Add to Target** 탭의 원하는 Target을 선택하고 **Add Package**를 클릭합니다.
 
 6. **패키지 추가 완료:**  
    설치가 완료되면 프로젝트의 “Swift Package Dependencies” 목록에 NavigationManager가 추가됩니다.
