@@ -14,32 +14,43 @@ import Combine
 public final class NavigationRouter: ObservableObject {
     /// NavigationStack에서 관리할 경로 배열
     @Published public var path: [Route] = []
-
-    public init() {}
+    
+    /// 애니메이션 관련
+    public var defaultTransitionAnimation: Animation?
+    
+    public init(animation: Animation? = .default) {
+        self.defaultTransitionAnimation = animation
+    }
     
     /// 해당 경로로 이동 (push)
-    public func toNamed(_ route: String, arguments: AnyHashable? = nil) {
+    public func toNamed(_ route: String, arguments: AnyHashable? = nil, animation: Animation? = nil) {
         let newRoute = Route(name: route, arguments: arguments)
-        path.append(newRoute)
+        withAnimation(animation ?? defaultTransitionAnimation) {
+            path.append(newRoute)
+        }
     }
     
     /// 뒤로가기 (pop)
-    public func back() {
-        _ = path.popLast()
+    public func back(animation: Animation? = nil) {
+        withAnimation(animation ?? defaultTransitionAnimation) {
+            _ = path.popLast()
+        }
     }
     
     /// 현재 화면을 제거하고 해당 경로로 이동 (replace)
-    public func offNamed(_ route: String, arguments: AnyHashable? = nil) {
-        if !path.isEmpty {
-            _ = path.popLast()
+    public func offNamed(_ route: String, arguments: AnyHashable? = nil, animation: Animation? = nil) {
+        withAnimation(animation ?? defaultTransitionAnimation) {
+            if !path.isEmpty { _ = path.popLast() }
+            path.append(Route(name: route, arguments: arguments))
         }
-        toNamed(route, arguments: arguments)
     }
     
     /// 전체 스택을 비우고 해당 경로를 새 루트로 설정
-    public func offAll(_ route: String, arguments: AnyHashable? = nil) {
-        path.removeAll()
-        toNamed(route, arguments: arguments)
+    public func offAll(_ route: String, arguments: AnyHashable? = nil, animation: Animation? = nil) {
+        withAnimation(animation ?? defaultTransitionAnimation) {
+            path.removeAll()
+            path.append(Route(name: route, arguments: arguments))
+        }
     }
 }
 
