@@ -85,6 +85,11 @@ struct HomeView: View {
          Button("상세 화면으로 이동") {
              router.toNamed("/detail")
          }
+         
+         // 존재하지 않는 경로 (/nonexistent는정의해 놓지 않은 경로임 -> unknown error)
+         Button("없는 페이지로 이동") {
+             router.toNamed("/nonexistent")
+         }
      }
      .padding()
  }
@@ -116,7 +121,8 @@ struct ContentView: View {
          routes: [
              RouteEntry(name: "/") { _ in HomeView() },
              RouteEntry(name: "/detail") { _ in DetailView() }
-         ]
+         ],
+         unknown: UnkownView() // (선택) 커스텀 알 수 없는 페이지 지정 시
      )
  }
 }
