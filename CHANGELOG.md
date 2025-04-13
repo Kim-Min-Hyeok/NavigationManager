@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.0.0
+- 화면전환 애니메이션 기능 삭제 (NavigationStack에서 지원 안됨)
+
 ## v1.1.1
 - UnknownErrorHandler 내장 및 사용자 커스텀 UnknownView 사용 지원 수정
 
