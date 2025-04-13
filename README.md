@@ -14,7 +14,7 @@ NavigationManager는 SwiftUI의 `NavigationStack`과 Combine을 활용해 선언
   `RouteEntry`를 사용해 경로 이름과 해당 경로에 연결된 뷰(클로저)를 매핑할 수 있습니다.
 
 - **예정된 업데이트:**  
-  Route Guard, Animation 등
+  Animation(Apple NavigationStack 에 animation 기능 추가될 시), 딥링크(Deep Link) 등
 
 ## 설치
 
