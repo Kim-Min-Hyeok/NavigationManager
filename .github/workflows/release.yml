@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag name for release (e.g. v1.1.0)'
+        description: 'Tag name for release (e.g. v1.0.0)'
         required: false
         default: ''
 
@@ -38,12 +38,15 @@ jobs:
           else
               TAG=$INPUT_TAG
           fi
-
+      
+          # 태그 값에서 앞뒤 공백 제거
+          TAG=$(echo "$TAG" | xargs)
+      
           if [ -z "$TAG" ]; then
               echo "Error: Tag name is required when running workflow_dispatch." >&2
               exit 1
           fi
-
+      
           echo "Found tag: $TAG"
           NOTES=$(awk -v tag="## ${TAG}" '
             BEGIN { found=0 }
@@ -51,15 +54,15 @@ jobs:
             /^## / && found { exit }
             found { print }
           ' CHANGELOG.md)
-          
+                
           if [ -z "$NOTES" ]; then
               NOTES="No release notes available for ${TAG}"
           fi
-          
+                
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
+      
           echo "tag<<EOF" >> $GITHUB_OUTPUT
           echo "$TAG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
