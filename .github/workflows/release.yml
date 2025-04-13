@@ -1,0 +1,46 @@
+# .github/workflows/release.yml
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Build & Test
+        run: |
+          xcodebuild -workspace NavigationManager.xcworkspace \
+                     -scheme NavigationManager \
+                     -destination 'platform=iOS Simulator,name=iPhone 14,OS=latest' \
+                     clean test | xcpretty
+
+      - name: Generate Release Notes from CHANGELOG.md
+        id: changelog
+        shell: bash
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "Found tag: $TAG"
+          NOTES=$(sed -n "/^## ${TAG//./\\.}/{:a;n;/^## /q;p;ba}" CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+              NOTES="No release notes available for ${TAG}"
+          fi
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.notes }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
