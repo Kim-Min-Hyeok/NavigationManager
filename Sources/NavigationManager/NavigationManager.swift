@@ -18,24 +18,24 @@ public struct NavigationManager: View {
     
     // 배포용 (내부 router 사용): 사용자 정의 unknown 없는 경우
     public init(initialRoute: String,
-                routes: [RouteEntry],
-                transitionAnimation: Animation? = .default) {
+                routes: [RouteEntry]/*,
+                transitionAnimation: Animation? = .default*/) {
         self.initialRoute = initialRoute
         self.routes = routes
         // DefaultUnknownRouteHandler 내장 에러 뷰 사용
         self.unknownRouteHandler = DefaultUnknownRouteHandler()
-        _router = StateObject(wrappedValue: NavigationRouter(animation: transitionAnimation))
+        _router = StateObject(wrappedValue: NavigationRouter(/*animation: transitionAnimation*/))
     }
     
     // 배포용 (내부 router 사용): 사용자 정의 unknown 있는 경우
     public init<Unknown: View>(initialRoute: String,
                                routes: [RouteEntry],
-                               unknown: Unknown,
-                               transitionAnimation: Animation? = .default) {
+                               unknown: Unknown/*,
+                               transitionAnimation: Animation? = .default*/) {
         self.initialRoute = initialRoute
         self.routes = routes
         self.unknownRouteHandler = CustomUnknownRouteHandler(customView: AnyView(unknown))
-        _router = StateObject(wrappedValue: NavigationRouter(animation: transitionAnimation))
+        _router = StateObject(wrappedValue: NavigationRouter(/*animation: transitionAnimation*/))
     }
     
     // 테스트용 (외부 router 주입)
