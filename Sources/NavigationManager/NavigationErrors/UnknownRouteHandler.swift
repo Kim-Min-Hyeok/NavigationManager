@@ -13,6 +13,22 @@ public protocol UnknownRouteHandler {
     func handleUnknownRoute(for routeName: String) -> AnyView
 }
 
+public struct CustomUnknownRouteHandler: UnknownRouteHandler {
+    let customView: AnyView
+    private let errorLogger: NavigationErrorLogger
+    
+    public init(customView: AnyView, errorLogger: NavigationErrorLogger = DefaultNavigationErrorLogger()) {
+        self.errorLogger = errorLogger
+        self.customView = customView
+    }
+    
+    public func handleUnknownRoute(for routeName: String) -> AnyView {
+        let error = NavigationError.unknownRouteError(routeName)
+        errorLogger.logError(error)
+        return customView
+    }
+}
+
 /// 기본 구현체: 에러 로그를 기록한 후 단순 텍스트 뷰 반환
 public struct DefaultUnknownRouteHandler: UnknownRouteHandler {
     private let errorLogger: NavigationErrorLogger
