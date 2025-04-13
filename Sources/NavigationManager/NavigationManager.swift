@@ -16,14 +16,25 @@ public struct NavigationManager: View {
     
     @StateObject private var router = NavigationRouter()
     
-    // 배포용 (내부 router 사용)
+    // 배포용 (내부 router 사용): 사용자 정의 unknown 없는 경우
     public init(initialRoute: String,
                 routes: [RouteEntry],
-                unknownRouteHandler: UnknownRouteHandler = DefaultUnknownRouteHandler(),
                 transitionAnimation: Animation? = .default) {
         self.initialRoute = initialRoute
         self.routes = routes
-        self.unknownRouteHandler = unknownRouteHandler
+        // DefaultUnknownRouteHandler 내장 에러 뷰 사용
+        self.unknownRouteHandler = DefaultUnknownRouteHandler()
+        _router = StateObject(wrappedValue: NavigationRouter(animation: transitionAnimation))
+    }
+    
+    // 배포용 (내부 router 사용): 사용자 정의 unknown 있는 경우
+    public init<Unknown: View>(initialRoute: String,
+                               routes: [RouteEntry],
+                               unknown: Unknown,
+                               transitionAnimation: Animation? = .default) {
+        self.initialRoute = initialRoute
+        self.routes = routes
+        self.unknownRouteHandler = CustomUnknownRouteHandler(customView: AnyView(unknown))
         _router = StateObject(wrappedValue: NavigationRouter(animation: transitionAnimation))
     }
     
