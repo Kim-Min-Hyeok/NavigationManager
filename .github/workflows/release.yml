@@ -6,6 +6,11 @@ on:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name for release (e.g. v1.1.0)'
+        required: false
+        default: ''
 
 jobs:
   release:
@@ -25,8 +30,20 @@ jobs:
       - name: Generate Release Notes from CHANGELOG.md
         id: changelog
         shell: bash
+        env:
+          INPUT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          TAG=${GITHUB_REF#refs/tags/}
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+              TAG=${GITHUB_REF#refs/tags/}
+          else
+              TAG=$INPUT_TAG
+          fi
+
+          if [ -z "$TAG" ]; then
+              echo "Error: Tag name is required when running workflow_dispatch." >&2
+              exit 1
+          fi
+
           echo "Found tag: $TAG"
           NOTES=$(awk -v tag="## ${TAG}" '
             BEGIN { found=0 }
@@ -42,13 +59,17 @@ jobs:
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          
+
+          echo "tag<<EOF" >> $GITHUB_OUTPUT
+          echo "$TAG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          name: Release ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.notes }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
