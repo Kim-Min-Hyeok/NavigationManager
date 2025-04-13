@@ -28,16 +28,16 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/}
           echo "Found tag: $TAG"
           NOTES=$(awk -v tag="## ${TAG}" '
-            BEGIN {print_flag=0}
-            $0 == tag {print_flag=1; next}
-            /^## / && print_flag {exit}
-            print_flag {print}
+            BEGIN { found=0 }
+            $0 == tag { found=1; next }
+            /^## / && found { exit }
+            found { print }
           ' CHANGELOG.md)
-      
+          
           if [ -z "$NOTES" ]; then
               NOTES="No release notes available for ${TAG}"
           fi
-      
+          
           echo "notes<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
