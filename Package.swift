@@ -9,19 +9,19 @@ let package = Package(
         .iOS(.v16)
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
+        // 라이브러리로 공개할 모듈 선언
         .library(
             name: "NavigationManager",
-            targets: ["NavigationManager"]),
+            targets: ["NavigationManager"]
+        ),
     ],
     dependencies: [
-       .package(url: "https://github.com/Kim-Min-Hyeok/NavigationManager.git", from: "1.0.0")
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "NavigationManager"),
+            name: "NavigationManager",
+            dependencies: []
+        ),
         .testTarget(
             name: "NavigationManagerTests",
             dependencies: ["NavigationManager"]
